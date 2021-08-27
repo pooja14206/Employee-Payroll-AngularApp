@@ -8,6 +8,9 @@ import { HeaderComponent } from './component/header/header.component';
 import { AddComponent } from './component/add/add.component';
 // import { EmployeeDetailComponent } from './component/employee-detail/employee-detail.component';
 import { HomeComponent } from './component/home/home.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatModule } from './material/mat/mat.module';
+import { EmployeeFormComponent } from './employee-form/employee-form.component';
 
 @NgModule({
   declarations: [
@@ -15,12 +18,15 @@ import { HomeComponent } from './component/home/home.component';
     HeaderComponent,
     AddComponent,
     // EmployeeDetailComponent,
-    HomeComponent
+    HomeComponent,
+    EmployeeFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatModule
   ],
   providers: [],
   bootstrap: [AppComponent]

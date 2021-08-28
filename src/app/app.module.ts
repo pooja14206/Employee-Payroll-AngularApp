@@ -11,7 +11,7 @@ import { HomeComponent } from './component/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatModule } from './material/mat/mat.module';
 import { EmployeeFormComponent } from './employee-form/employee-form.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +26,8 @@ import { EmployeeFormComponent } from './employee-form/employee-form.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatModule
+    MatModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Employee } from 'src/app/model/employee';
+import { HttpService } from 'src/app/service/http.service';
 
 @Component({
   selector: 'app-add',
@@ -9,15 +11,51 @@ import { Employee } from 'src/app/model/employee';
 })
 export class AddComponent implements OnInit {
 
-  public employee: Employee = new Employee();
-  public employeeFormGroup: FormGroup = new FormGroup({
-    fullName: new FormControl(''),
-    profilePic: new FormControl(''),
-    gender: new FormControl('')
-  });
-  
 
-  constructor() { }
+  public employee: Employee = new Employee;
+  public employeeFormGroup: FormGroup;
+
+  departments: Array<any> = [
+    {
+      name: "HR",
+      value: "HR"
+    },
+    {
+      name: "Sales",
+      value: "Sales"
+    },
+    {
+      name: "Finance",
+      value: "Finance"
+    },
+    {
+      name: "Engineer",
+      value: "Engineer"
+    },
+    {
+      name: "Other",
+      value: "Other"
+    }
+  ]
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private httpService: HttpService,
+    ) {
+    this.employeeFormGroup = this.formBuilder.group({
+      name: new FormControl(''),
+      profilePic: new FormControl(''),
+      gender: new FormControl(''),
+      department: this.formBuilder.array([], [Validators.required]),
+      salary: new FormControl(''),
+      startDate: new FormControl(''),
+      note: new FormControl('') 
+    })
+   }
+
+  ngOnInit(): void {
+    console.log(this.employeeFormGroup);
+  }
 
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -26,11 +64,26 @@ export class AddComponent implements OnInit {
     return value;
   }
 
-  // onSubmit(){
-  //   console.log(this.employee);
-  // }
+  onCheckboxChange(event: MatCheckboxChange) {
+    const department: FormArray = this.employeeFormGroup.get('department') as FormArray;
 
-  ngOnInit(): void {
+    if (event.checked) {
+      department.push(new FormControl(event.source.value));
+    } else {
+      const index = department.controls.findIndex(x => x.value === event.source.value);
+      department.removeAt(index);
+    }
   }
 
+  salary: number = 400000;
+  updateSetting(event: any) {
+    this.salary = event.value;
+  }
+
+  onSubmit(): void {
+    this.employee = this.employeeFormGroup.value;
+    this.httpService.addEmployeeData(this.employee).subscribe(response=> {
+      console.log(response);
+    });
+  }
 }

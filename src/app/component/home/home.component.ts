@@ -10,12 +10,19 @@ export class HomeComponent implements OnInit {
   public employeeCount: number = 10;
   public employeeDetails: Employee[] = [];
 
-  constructor(private httpService: HttpService){}
+  constructor(private httpService: HttpService) { }
   ngOnInit(): void {
-    this.httpService.getEmployeeData().subscribe(data=>{
+    this.httpService.getEmployeeData().subscribe(data => {
       this.employeeDetails = data.data
       this.employeeCount = this.employeeDetails.length;
       console.log(this.employeeDetails);
-  });
-}
+    });
+  }
+
+  remove(empId: number) {
+    this.httpService.deleteEmployeeData(empId).subscribe(data => {
+      console.log(data);
+      // this.ngOnInit();
+    });
+  }
 }

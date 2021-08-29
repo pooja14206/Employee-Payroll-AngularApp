@@ -1,12 +1,12 @@
 
 export class Employee {
 
-    id!: number;
+    empId!: number;
     name!: String;
     gender!: String; 
     salary!: number;
     startDate!: Date;
     note!: String;
     profilePic!: String;
-    department!: String;    
+    department!: String[];    
 }

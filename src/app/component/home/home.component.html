@@ -5,7 +5,7 @@
             Employee Details <div class="emp-count">{{employeeCount}}</div>
         </div>
         <a class="add-button" routerLink="/add">
-            <img src="../../../assets/plus.png" alt="Add User Logo">Add User
+            <img src="../assets/plus.png" alt="Add User Logo">Add User
         </a>
     </div>
     <div class="table-main">
@@ -25,19 +25,18 @@
             </td>
             <td>{{employee.name}}</td>
             <td>{{employee.gender}}</td>
-            <td >
-                <div class="dept-label" >
+            <td>
+                <div class="dept-label" *ngFor="let department of employee.department">
                     {{employee.department}}
                 </div>
-                <!-- <div class="dept-label">Finance</div> -->
             </td>
             <td>{{employee.salary}}</td>
             <td>{{employee.startDate}}</td>
             <td>
-                <img id={{employee.id}} onclick="remove(this)"
+                <img id={{employee.empId}} (click)="remove(employee.empId)"
                     src="../assets/delete.svg"
                     alt="delete">
-                <img id={{employee.id}} onclick="update(this)"
+                <img id={{employee.empId}} Onclick="update(this)"
                     src="../assets/create.svg" alt="edit">
             </td>
         </tr>

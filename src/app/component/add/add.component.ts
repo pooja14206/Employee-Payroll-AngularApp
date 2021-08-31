@@ -18,7 +18,6 @@ export class AddComponent implements OnInit {
   public employee: Employee = new Employee;
   public employeeFormGroup: FormGroup;
 
-
   departments: Array<any> = [
     {
       name: "HR",
@@ -53,16 +52,15 @@ export class AddComponent implements OnInit {
     private router: Router,
     private dataService: DataService,
     private activatedRouter: ActivatedRoute,
-    private fromBuilder: FormBuilder
   ) {
     this.employeeFormGroup = this.formBuilder.group({
-      name: new FormControl(''),
-      profilePic: new FormControl(''),
-      gender: new FormControl(''),
+      name: new FormControl('', [ Validators.required, Validators.pattern("^[A-Z][a-zA-z\\s]{2,}$")]),
+      profilePic: new FormControl('', Validators.required),
+      gender: new FormControl('', Validators.required),
       department: this.formBuilder.array([], [Validators.required]),
-      salary: new FormControl(''),
-      startDate: new FormControl(''),
-      note: new FormControl('')
+      salary: new FormControl('', Validators.required),
+      startDate: new FormControl('',Validators.required),
+      note: new FormControl('',Validators.required)
     })
   }
   ngOnInit(): void {
@@ -71,52 +69,63 @@ export class AddComponent implements OnInit {
       this.dataService.currentEmployee.subscribe(employee => {
         if (Object.keys(employee).length !== 0) {
           this.employeeFormGroup.get('name')?.setValue(employee.name);
-          this.employeeFormGroup.patchValue({ 'profilePic': employee.profilePic });
+          this.employeeFormGroup.patchValue({ 'profilePic': employee.profilePic});
           this.employeeFormGroup.patchValue({ 'gender': employee.gender });
           this.employeeFormGroup.get('salary')?.setValue(employee.salary);
-          this.employeeFormGroup.get('startDate')?.setValue(employee.startDate);
-          this.employeeFormGroup.get('note')?.setValue(employee.note);
+          this.employeeFormGroup.patchValue({ 'startDate': employee.startDate});
+          // this.employeeFormGroup.get('startDate')?.setValue(employee.startDate);
+          this.employeeFormGroup.patchValue({'note': employee.note});
+          const department: FormArray = this.employeeFormGroup.get('department')as FormArray;
           employee.department.forEach(departmentElement => {
             for (let index = 0; index < this.departments.length; index++) {
               if (this.departments[index].name === departmentElement) {
                 this.departments[index].checked = true;
+                department.push(new FormControl(this.departments[index].value))
               }
             }
-          })  
+          })
         }
       })
     }
-  }          
+  }
 
   formatLabel(value: number) {
-        if(value >= 1000) {
-        return Math.round(value / 1000) + 'k';
-      }
-      return value;
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
     }
+    return value;
+  }
 
-    onCheckboxChange(event: MatCheckboxChange) {
-      const department: FormArray = this.employeeFormGroup.get('department') as FormArray;
+  onCheckboxChange(event: MatCheckboxChange) {
+    const department: FormArray = this.employeeFormGroup.get('department') as FormArray;
 
-      if (event.checked) {
-        department.push(new FormControl(event.source.value));
-      } else {
-        const index = department.controls.findIndex(x => x.value === event.source.value);
-        department.removeAt(index);
-      }
+    if (event.checked) {
+      department.push(new FormControl(event.source.value));
+    } else {
+      const index = department.controls.findIndex(x => x.value === event.source.value);
+      department.removeAt(index);
     }
+  }
 
-    salary: number = 400000;
-    updateSetting(event: any) {
-      this.salary = event.value;
-    }
+  salary: number = 400000;
+  updateSetting(event: any) {
+    this.salary = event.value;
+  }
 
-    onSubmit(): void {
+  onSubmit(): void {
+    if (this.activatedRouter.snapshot.params['id'] != undefined) {
+      console.log(this.employeeFormGroup.value);
+      this.httpService.updateEmployeeData(this.activatedRouter.snapshot.params['id'],
+        this.employeeFormGroup.value).subscribe(Response => {
+          this.router.navigateByUrl("/home");
+
+        });
+    } else {
       this.employee = this.employeeFormGroup.value;
-      // if(this.employee == employee)
       this.httpService.addEmployeeData(this.employee).subscribe(response => {
         console.log(response);
         this.router.navigateByUrl("/home");
       });
     }
   }
+}

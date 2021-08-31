@@ -30,6 +30,9 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  // d: any = new Date('yourDate');
+  // d.setMinutes( d.getMinutes() + d.getTimezoneOffset() );
+
   // update(employee: Employee):void{
   //   this.router.navigateByUrl("/add");
   //   this.httpService.updateEmployeeData(empId, employee).subscribe(response =>{

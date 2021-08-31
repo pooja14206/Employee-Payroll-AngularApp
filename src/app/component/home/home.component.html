@@ -31,8 +31,8 @@
                     {{department}}
                 </div>
             </td>
-            <td>{{employee.salary}}</td>
-            <td>{{employee.startDate}}</td>
+            <td>{{employee.salary | currency: "₹ "}}</td>
+            <td>{{employee.startDate | repalce}}</td>
             <td>{{employee.note}}</td>
             <td>
                 <img id={{employee.empId}} (click)="remove(employee.empId)"

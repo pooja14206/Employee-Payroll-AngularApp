@@ -11,13 +11,15 @@ import { HomeComponent } from './component/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatModule } from './material/mat/mat.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RepalcePipe } from './pipe/repalce.pipe';
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     AddComponent,
     // EmployeeDetailComponent,
-    HomeComponent
+    HomeComponent,
+    RepalcePipe
     ],
   imports: [
     BrowserModule,

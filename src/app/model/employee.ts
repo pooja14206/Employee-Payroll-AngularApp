@@ -1,3 +1,4 @@
+import { Data } from "@angular/router";
 
 export class Employee {
 
@@ -8,5 +9,5 @@ export class Employee {
     startDate!: Date;
     note!: String;
     profilePic!: String;
-    department!: String[];    
+    department!: String[];
 }

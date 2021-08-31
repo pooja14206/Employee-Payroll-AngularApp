@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class HttpService {
 
-  baseURL: string = "http://localhost:8080/employeepayrollservice/";
+  private baseURL: string = "http://localhost:8080/employeepayrollservice/";
 
   constructor(  private httpClient: HttpClient){
 
@@ -23,5 +23,9 @@ export class HttpService {
 
   deleteEmployeeData(empId: number): Observable<any> {
     return this.httpClient.delete(this.baseURL + "delete/" + empId);
+  }
+
+  updateEmployeeData(empId: number, body: any): Observable<any> {
+    return this.httpClient.put(this.baseURL + "update/"  + empId, body);
   }
 }

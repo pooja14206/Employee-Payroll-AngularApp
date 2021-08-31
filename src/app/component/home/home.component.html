@@ -17,6 +17,7 @@
             <th>Department</th>
             <th>Salary</th>
             <th>Start Date</th>
+            <th>Notes</th>
             <th>Actions</th>
         </tr>
         <tr *ngFor="let employee of employeeDetails">  
@@ -27,16 +28,16 @@
             <td>{{employee.gender}}</td>
             <td>
                 <div class="dept-label" *ngFor="let department of employee.department">
-                    {{employee.department}}
+                    {{department}}
                 </div>
             </td>
             <td>{{employee.salary}}</td>
             <td>{{employee.startDate}}</td>
+            <td>{{employee.note}}</td>
             <td>
                 <img id={{employee.empId}} (click)="remove(employee.empId)"
-                    src="../assets/delete.svg"
-                    alt="delete">
-                <img id={{employee.empId}} Onclick="update(this)"
+                    src="../assets/delete.svg"alt="delete">
+                <img id={{employee.empId}} (click)="update(employee)"
                     src="../assets/create.svg" alt="edit">
             </td>
         </tr>

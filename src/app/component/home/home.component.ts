@@ -9,12 +9,15 @@ import { HttpService } from 'src/app/service/http.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  
   public employeeCount: number = 10;
   public employeeDetails: Employee[] = [];
   
-
-
-  constructor(private httpService: HttpService, private router: Router,public dataService: DataService) { }
+  constructor(
+    private httpService: HttpService,
+    private router: Router,
+    public dataService: DataService) { }
+  
   ngOnInit(): void {
     this.httpService.getEmployeeData().subscribe(data => {
       this.employeeDetails = data.data
@@ -23,23 +26,22 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  /**
+   * 
+   * @method: remove method is use to delete the existing employee form database.
+   * using the id of the person we delete the person from the addressbook.
+   * @param empId 
+   */
   remove(empId: number) {
     this.httpService.deleteEmployeeData(empId).subscribe(data => {
       console.log(data);
       this.ngOnInit();
     });
   }
-
-  // d: any = new Date('yourDate');
-  // d.setMinutes( d.getMinutes() + d.getTimezoneOffset() );
-
-  // update(employee: Employee):void{
-  //   this.router.navigateByUrl("/add");
-  //   this.httpService.updateEmployeeData(empId, employee).subscribe(response =>{
-  //     console.log(response);
-  //     // this.router.navigateByUrl("/home");
-  // });
-  // }
+  /**
+   * @method: update method is use to update the existing employee to database.
+   * @param employee 
+   */
   update(employee: Employee): void {
     this.dataService.changeEmployee(employee);
     this.router.navigateByUrl('/add/' +employee.empId)

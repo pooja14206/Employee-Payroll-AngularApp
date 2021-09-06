@@ -4,43 +4,46 @@
         <div class="emp-detail-text">
             Employee Details <div class="emp-count">{{employeeCount}}</div>
         </div>
+        <!-- add button redirect to the add page to add a new employee -->
         <a class="add-button" routerLink="/add">
             <img src="../assets/plus.png" alt="Add User Logo">Add User
         </a>
     </div>
     <div class="table-main">
-    <table id="table-display" class="table">
-        <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Gender</th>
-            <th>Department</th>
-            <th>Salary</th>
-            <th>Start Date</th>
-            <th>Notes</th>
-            <th>Actions</th>
-        </tr>
-        <tr *ngFor="let employee of employeeDetails">  
-            <td>
-                <img class="profile" src={{employee.profilePic}} alt="">
-            </td>
-            <td>{{employee.name}}</td>
-            <td>{{employee.gender}}</td>
-            <td>
-                <div class="dept-label" *ngFor="let department of employee.department">
-                    {{department}}
-                </div>
-            </td>
-            <td>{{employee.salary | currency: "₹ "}}</td>
-            <td>{{employee.startDate | repalce}}</td>
-            <td>{{employee.note}}</td>
-            <td>
-                <img id={{employee.empId}} (click)="remove(employee.empId)"
-                    src="../assets/delete.svg"alt="delete">
-                <img id={{employee.empId}} (click)="update(employee)"
-                    src="../assets/create.svg" alt="edit">
-            </td>
-        </tr>
-    </table>
-</div>
+        <table id="table-display" class="table">
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Start Date</th>
+                <th>Notes</th>
+                <th>Actions</th>
+            </tr>
+            <tr *ngFor="let employee of employeeDetails">
+                <td>
+                    <img class="profile" src={{employee.profilePic}} alt="">
+                </td>
+                <td>{{employee.name}}</td>
+                <td>{{employee.gender}}</td>
+                <td>
+                    <div class="dept-label" *ngFor="let department of employee.department">
+                        {{department}}
+                    </div>
+                </td>
+                <!-- "repacleCurrency" coustom pipe is use for proper fomating the salary with rupee symbol -->
+                <td>{{employee.salary| replaceCurrency}}</td>
+                <!-- "repalce" coustom piple is use for proper formating the date -->
+                <td>{{employee.startDate | repalce}}</td>
+                <td>{{employee.note}}</td>
+                <td>
+                    <!-- delete employee form employee payroll -->
+                    <img id={{employee.empId}} (click)="remove(employee.empId)" src="../assets/delete.svg" alt="delete">
+                    <!-- upadate a existing employee -->
+                    <img id={{employee.empId}} (click)="update(employee)" src="../assets/create.svg" alt="edit">
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>

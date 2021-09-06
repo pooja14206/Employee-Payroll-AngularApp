@@ -53,29 +53,37 @@ export class AddComponent implements OnInit {
     private dataService: DataService,
     private activatedRouter: ActivatedRoute,
   ) {
+    /**
+     * Added validations to the EMPLOYEE data.
+     */
     this.employeeFormGroup = this.formBuilder.group({
-      name: new FormControl('', [ Validators.required, Validators.pattern("^[A-Z][a-zA-z\\s]{2,}$")]),
+      name: new FormControl('', [Validators.required, Validators.pattern("^[A-Z]{1}[a-zA-Z\s]{2,}$")]),
       profilePic: new FormControl('', Validators.required),
       gender: new FormControl('', Validators.required),
       department: this.formBuilder.array([], [Validators.required]),
       salary: new FormControl('', Validators.required),
-      startDate: new FormControl('',Validators.required),
-      note: new FormControl('',Validators.required)
+      startDate: new FormControl('', Validators.required),
+      note: new FormControl('', Validators.required)
     })
   }
+
+  /**
+   * This method set employee object value of a particular employee id in the employeeFormBuilder.
+   * It is called when we perform update() operation.
+   */
   ngOnInit(): void {
 
     if (this.activatedRouter.snapshot.params['id'] != undefined) {
       this.dataService.currentEmployee.subscribe(employee => {
         if (Object.keys(employee).length !== 0) {
           this.employeeFormGroup.get('name')?.setValue(employee.name);
-          this.employeeFormGroup.patchValue({ 'profilePic': employee.profilePic});
+          this.employeeFormGroup.patchValue({ 'profilePic': employee.profilePic });
           this.employeeFormGroup.patchValue({ 'gender': employee.gender });
           this.employeeFormGroup.get('salary')?.setValue(employee.salary);
-          this.employeeFormGroup.patchValue({ 'startDate': employee.startDate});
+          this.employeeFormGroup.patchValue({ 'startDate': employee.startDate });
           // this.employeeFormGroup.get('startDate')?.setValue(employee.startDate);
-          this.employeeFormGroup.patchValue({'note': employee.note});
-          const department: FormArray = this.employeeFormGroup.get('department')as FormArray;
+          this.employeeFormGroup.patchValue({ 'note': employee.note });
+          const department: FormArray = this.employeeFormGroup.get('department') as FormArray;
           employee.department.forEach(departmentElement => {
             for (let index = 0; index < this.departments.length; index++) {
               if (this.departments[index].name === departmentElement) {
@@ -89,6 +97,29 @@ export class AddComponent implements OnInit {
     }
   }
 
+  /**
+   * This method validate the employee name and note
+   * @param controlName 
+   * @param errorName 
+   * @returns 
+   */
+  public checkError = (controlName: string, errorName: string) => {
+    return this.employeeFormGroup.controls[controlName].hasError(errorName);
+  }
+
+  /**
+   * this method capute the salary value 
+   */
+  salary: number = 400000;
+  updateSetting(event: any) {
+    this.salary = event.value;
+  }
+
+  /**
+   * formatLabel() is set at an interval of 1000.
+   * @param value 
+   * @returns 
+   */
   formatLabel(value: number) {
     if (value >= 1000) {
       return Math.round(value / 1000) + 'k';
@@ -96,6 +127,12 @@ export class AddComponent implements OnInit {
     return value;
   }
 
+  /**
+   * Department is a array.
+   * This oncheckboxChange method is called to store the checked values.
+   * when a checkbox is checked, the value is store to department.
+   * @param event 
+   */
   onCheckboxChange(event: MatCheckboxChange) {
     const department: FormArray = this.employeeFormGroup.get('department') as FormArray;
 
@@ -107,14 +144,12 @@ export class AddComponent implements OnInit {
     }
   }
 
-  salary: number = 400000;
-  updateSetting(event: any) {
-    this.salary = event.value;
-  }
-
+  /**
+   * onSubmit method is common for Add or Update a employee.
+   * If employee is already present it will update the record or else add a new employee to the database.
+   */
   onSubmit(): void {
     if (this.activatedRouter.snapshot.params['id'] != undefined) {
-      console.log(this.employeeFormGroup.value);
       this.httpService.updateEmployeeData(this.activatedRouter.snapshot.params['id'],
         this.employeeFormGroup.value).subscribe(Response => {
           this.router.navigateByUrl("/home");
@@ -123,7 +158,6 @@ export class AddComponent implements OnInit {
     } else {
       this.employee = this.employeeFormGroup.value;
       this.httpService.addEmployeeData(this.employee).subscribe(response => {
-        console.log(response);
         this.router.navigateByUrl("/home");
       });
     }

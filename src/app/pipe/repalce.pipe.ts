@@ -11,5 +11,4 @@ export class RepalcePipe implements PipeTransform {
     value = datePipe.transform(value, 'dd MMM yyyy');
     return value; 
   }
-
 }

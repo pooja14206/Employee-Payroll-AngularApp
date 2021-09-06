@@ -6,10 +6,16 @@
 
     <!-------Input Name--------->
     <div class="row-content">
+
       <mat-label class="label text">Full Name</mat-label>
       <mat-form-field class="example-full-width" appearance="outline">
         <input class="name-input" matInput placeholder="Your name" formControlName="name">
+        <mat-error *ngIf="checkError('name', 'required')">Name is required</mat-error>
+        <mat-error *ngIf="checkError('name', 'pattern')">Name should start with capital latter and have minimum of 3
+          characters</mat-error>
+
       </mat-form-field>
+
     </div>
 
     <!------Profile image---------->
@@ -17,22 +23,22 @@
       <label class="label text" for="profile">Profile Image </label>
       <div class="profile-radio-content">
         <mat-radio-group ngDefaultControl formControlName="profilePic">
-        <mat-radio-button name="profile" color="primary" value="../assets/Ellipse1.png">
-          <img class="profile" id='image1' src="../assets/Ellipse1.png">
-        </mat-radio-button>
-        <mat-radio-button name="profile" color="primary" value="../assets/Ellipse2.png" >
-          <img class="profile" id='image2' src="../assets/Ellipse2.png">
-        </mat-radio-button>
-        <mat-radio-button name="profile" color="primary" value="../assets/Ellipse3.png">
-          <img class="profile" id='image3' src="../assets/Ellipse3.png">
-        </mat-radio-button>
-        <mat-radio-button name="profile" color="primary" value="../assets/Ellipse4.png">
-          <img class="profile" id='image4' src="../assets/Ellipse4.png">
-        </mat-radio-button>
-        <mat-radio-button name="profile" color="primary" value="../assets/Ellipse5.png">
-          <img class="profile" id='image5' src="../assets/Ellipse5.png">
-        </mat-radio-button>
-      </mat-radio-group>
+          <mat-radio-button name="profile" color="primary" value="../assets/Ellipse1.png">
+            <img class="profile" id='image1' src="../assets/Ellipse1.png">
+          </mat-radio-button>
+          <mat-radio-button name="profile" color="primary" value="../assets/Ellipse2.png">
+            <img class="profile" id='image2' src="../assets/Ellipse2.png">
+          </mat-radio-button>
+          <mat-radio-button name="profile" color="primary" value="../assets/Ellipse3.png">
+            <img class="profile" id='image3' src="../assets/Ellipse3.png">
+          </mat-radio-button>
+          <mat-radio-button name="profile" color="primary" value="../assets/Ellipse4.png">
+            <img class="profile" id='image4' src="../assets/Ellipse4.png">
+          </mat-radio-button>
+          <mat-radio-button name="profile" color="primary" value="../assets/Ellipse5.png">
+            <img class="profile" id='image5' src="../assets/Ellipse5.png">
+          </mat-radio-button>
+        </mat-radio-group>
       </div>
     </div>
 
@@ -88,15 +94,19 @@
       <mat-form-field class="example-full-width" appearance="outline">
         <textarea matInput id="notes" class="input" name="Notes" placeholder="" style="height:100px"
           formControlName="note"></textarea>
+        <mat-error *ngIf="checkError('name', 'required')">Note is required</mat-error>
       </mat-form-field>
     </div>
 
     <div class="buttonParent">
-      <a routerLink="/home">
+      <a routerLink="/home"> 
+        <!-- cabcel button for cancel and go back to home page -->
         <button mat-raised-button class="resetButton button cancelButton">Cancel</button>
       </a>
       <div class="submit-reset">
+        <!-- add button for add new employee to the employee payroll data -->
         <button mat-raised-button type="submit" class="button submitButton">Submit</button>
+        <!-- reset button for reset the values -->
         <button mat-raised-button type="reset" class="resetButton button">Reset</button>
       </div>
     </div>

@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { group } from 'console';
 import { Employee } from 'src/app/model/employee';
 import { DataService } from 'src/app/service/data.service';
 import { HttpService } from 'src/app/service/http.service';
@@ -57,15 +56,22 @@ export class AddComponent implements OnInit {
      * Added validations to the EMPLOYEE data.
      */
     this.employeeFormGroup = this.formBuilder.group({
-      name: new FormControl('', [Validators.required, Validators.pattern("^[A-Z]{1}[a-zA-Z\s]{2,}$")]),
-      profilePic: new FormControl('', Validators.required),
+      name: new FormControl('', [Validators.required, Validators.pattern("^[A-Z]{1}[a-zA-Z\\s]{2,}$")]),
+      profilePic: new FormControl(''),
       gender: new FormControl('', Validators.required),
-      department: this.formBuilder.array([], [Validators.required]),
-      salary: new FormControl('', Validators.required),
+      department: this.formBuilder.array([], Validators.required),
+      salary: new FormControl('', [Validators.required,  Validators.min(500)]),
       startDate: new FormControl('', Validators.required),
       note: new FormControl('', Validators.required)
     })
   }
+
+  myDate = new Date();
+  maxDate = new Date(
+    this.myDate.getFullYear(),
+    this.myDate.getMonth(),
+    this.myDate.getDate()
+  );
 
   /**
    * This method set employee object value of a particular employee id in the employeeFormBuilder.
@@ -81,7 +87,6 @@ export class AddComponent implements OnInit {
           this.employeeFormGroup.patchValue({ 'gender': employee.gender });
           this.employeeFormGroup.get('salary')?.setValue(employee.salary);
           this.employeeFormGroup.patchValue({ 'startDate': employee.startDate });
-          // this.employeeFormGroup.get('startDate')?.setValue(employee.startDate);
           this.employeeFormGroup.patchValue({ 'note': employee.note });
           const department: FormArray = this.employeeFormGroup.get('department') as FormArray;
           employee.department.forEach(departmentElement => {
@@ -98,7 +103,7 @@ export class AddComponent implements OnInit {
   }
 
   /**
-   * This method validate the employee name and note
+   * This method validate the employee details
    * @param controlName 
    * @param errorName 
    * @returns 
@@ -110,7 +115,7 @@ export class AddComponent implements OnInit {
   /**
    * this method capute the salary value 
    */
-  salary: number = 400000;
+  salary: number | undefined;
   updateSetting(event: any) {
     this.salary = event.value;
   }
@@ -143,20 +148,23 @@ export class AddComponent implements OnInit {
       department.removeAt(index);
     }
   }
-
+  
   /**
    * onSubmit method is common for Add or Update a employee.
    * If employee is already present it will update the record or else add a new employee to the database.
    */
   onSubmit(): void {
+    this.employee = this.employeeFormGroup.value;
+    // console.log(this.employeeFormGroup.value);
     if (this.activatedRouter.snapshot.params['id'] != undefined) {
       this.httpService.updateEmployeeData(this.activatedRouter.snapshot.params['id'],
-        this.employeeFormGroup.value).subscribe(Response => {
-          this.router.navigateByUrl("/home");
-
-        });
+      this.employee).subscribe(Response => {
+        this.router.navigateByUrl("/home");
+        
+      });
     } else {
       this.employee = this.employeeFormGroup.value;
+      // console.log(this.employee);
       this.httpService.addEmployeeData(this.employee).subscribe(response => {
         this.router.navigateByUrl("/home");
       });

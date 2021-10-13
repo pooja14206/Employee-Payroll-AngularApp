@@ -6,16 +6,12 @@
 
     <!-------Input Name--------->
     <div class="row-content">
-
       <mat-label class="label text">Full Name</mat-label>
       <mat-form-field class="example-full-width" appearance="outline">
         <input class="name-input" matInput placeholder="Your name" formControlName="name">
         <mat-error *ngIf="checkError('name', 'required')">Name is required</mat-error>
-        <mat-error *ngIf="checkError('name', 'pattern')">Name should start with capital latter and have minimum of 3
-          characters</mat-error>
-
+        <mat-error *ngIf="checkError('name', 'pattern')">Invalid name</mat-error>
       </mat-form-field>
-
     </div>
 
     <!------Profile image---------->
@@ -82,9 +78,10 @@
     <div class="row-content">
       <label class="label text" for="startDate"> Start Date </label>
       <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="startDate">
+        <input matInput [max]="maxDate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="startDate">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="checkError('name', 'required')">Name is required</mat-error>
       </mat-form-field>
     </div>
 
@@ -94,12 +91,12 @@
       <mat-form-field class="example-full-width" appearance="outline">
         <textarea matInput id="notes" class="input" name="Notes" placeholder="" style="height:100px"
           formControlName="note"></textarea>
-        <mat-error *ngIf="checkError('name', 'required')">Note is required</mat-error>
+        <mat-error *ngIf="checkError('note', 'required')">Note is required</mat-error>
       </mat-form-field>
     </div>
 
     <div class="buttonParent">
-      <a routerLink="/home"> 
+      <a routerLink="/home">
         <!-- cabcel button for cancel and go back to home page -->
         <button mat-raised-button class="resetButton button cancelButton">Cancel</button>
       </a>

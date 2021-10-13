@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Employee } from '../model/employee';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,8 @@ export class HttpService {
     * @param: body.
     *return: Newly created employee. 
   */
-  addEmployeeData(body: any): Observable<any> {
+  addEmployeeData(body: Employee): Observable<any> {
+    // console.log(body);
     return this.httpClient.post(this.baseURL + "create", body);
   }
 

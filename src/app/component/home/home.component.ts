@@ -10,7 +10,7 @@ import { HttpService } from 'src/app/service/http.service';
 })
 export class HomeComponent implements OnInit {
   
-  public employeeCount: number = 10;
+  public employeeCount!: number;
   public employeeDetails: Employee[] = [];
   
   constructor(
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     this.httpService.getEmployeeData().subscribe(data => {
       this.employeeDetails = data.data
       this.employeeCount = this.employeeDetails.length;
-      console.log(this.employeeDetails);
+      // console.log(this.employeeDetails);
     });
   }
 
@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
    */
   remove(empId: number) {
     this.httpService.deleteEmployeeData(empId).subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.ngOnInit();
     });
   }
@@ -44,6 +44,6 @@ export class HomeComponent implements OnInit {
    */
   update(employee: Employee): void {
     this.dataService.changeEmployee(employee);
-    this.router.navigateByUrl('/add/' +employee.empId)
+    this.router.navigateByUrl('/add/' +employee.employeeId);
   }
 }

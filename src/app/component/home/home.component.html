@@ -35,13 +35,13 @@
                 <!-- "repacleCurrency" coustom pipe is use for proper fomating the salary with rupee symbol -->
                 <td>{{employee.salary| replaceCurrency}}</td>
                 <!-- "repalce" coustom piple is use for proper formating the date -->
-                <td>{{employee.startDate | repalce}}</td>
+                <td>{{employee.startDate | repalce }}</td>
                 <td>{{employee.note}}</td>
                 <td>
                     <!-- delete employee form employee payroll -->
-                    <img id={{employee.empId}} (click)="remove(employee.empId)" src="../assets/delete.svg" alt="delete">
+                    <img id={{employee.employeeId}} (click)="remove(employee.employeeId)" src="../assets/delete.svg" alt="delete">
                     <!-- upadate a existing employee -->
-                    <img id={{employee.empId}} (click)="update(employee)" src="../assets/create.svg" alt="edit">
+                    <img id={{employee.employeeId}} (click)="update(employee)" src="../assets/create.svg" alt="edit">
                 </td>
             </tr>
         </table>

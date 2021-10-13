@@ -2,12 +2,12 @@ import { Data } from "@angular/router";
 
 export class Employee {
 
-    empId!: number;
-    name!: String;
-    gender!: String; 
+    employeeId!: number;
+    name!: string;
+    gender!: string; 
     salary!: number;
     startDate!: Date;
-    note!: String;
-    profilePic!: String;
-    department!: String[];
+    note!: string;
+    profilePic!: string;
+    department!: string[];
 }
